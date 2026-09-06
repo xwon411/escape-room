@@ -7,97 +7,101 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#122a44;--navy2:#0d2136;--grid:rgba(150,196,228,.10);--grid2:rgba(150,196,228,.18);
- --cyan:#7fb6dd;--cyan-soft:#a9cbe4;--paper:#f2ead6;--paper2:#ece2c9;--ink:#2b2a24;--mut:#6f6a5c;
- --red:#c1402f;--gold:#c79a3e;--blue:#2b7fe0;--ok:#57c98a;--shadow:0 14px 34px rgba(0,0,0,.34);
+:root{--paper:#f2ead6;--paper2:#ece2c9;--paper3:#e7ddc7;--sheet:#f8f3e6;
+ --ink:#2b2a24;--ink2:#161512;--mut:#6f6a5c;--line:#b3a98d;--line2:#cdbf98;
+ --grid:rgba(150,138,106,.11);--grid2:rgba(150,138,106,.20);
+ --red:#c1402f;--gold:#c79a3e;--blue:#2b7fe0;--ok:#2f7d52;--taken:#a8493c;
+ --shadow:0 10px 26px rgba(90,78,48,.16);
  --kr:'Nanum Gothic','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
 *{box-sizing:border-box}
-body{margin:0;color:var(--cyan-soft);background:var(--navy);
+body{margin:0;color:var(--ink);background:var(--paper);
  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),
  linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px),
- radial-gradient(120% 90% at 50% -10%,#1b3a5c 0%,var(--navy) 55%,var(--navy2) 100%);
+ radial-gradient(120% 90% at 50% -10%,#f9f4e6 0%,var(--paper) 55%,#e9dfc6 100%);
  background-size:26px 26px,26px 26px,130px 130px,130px 130px,100% 100%;background-attachment:fixed;
  font-family:var(--kr);line-height:1.7;-webkit-font-smoothing:antialiased}
 .hidden{display:none!important}
 .wrap{max-width:880px;margin:0 auto;padding:0 18px 90px}
 header{text-align:center;padding:48px 0 8px}
-.eyebrow{font:800 11px/1 var(--kr);letter-spacing:4px;color:var(--cyan);margin-bottom:14px}
-h1{font:400 clamp(30px,6.5vw,52px)/1.1 'Black Han Sans',var(--kr);color:#fff;margin:0}
-h1 .ex{color:var(--gold)}
-.tag{margin-top:12px;color:#cfe0ee;font-size:14px}
+.eyebrow{font:800 11px/1 var(--kr);letter-spacing:4px;color:#8a7f66;margin-bottom:14px}
+h1{font:400 clamp(30px,6.5vw,52px)/1.1 'Black Han Sans',var(--kr);color:var(--ink2);margin:0}
+h1 .ex{color:var(--red)}
+.tag{margin-top:12px;color:#4a483f;font-size:14px}
 .info{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
-.chip{background:rgba(255,255,255,.06);border:1px solid rgba(150,196,228,.28);border-radius:999px;
- padding:7px 15px;font:700 12px/1 var(--kr);color:var(--cyan-soft)}
+.chip{background:var(--paper2);border:1px solid var(--line2);border-radius:999px;
+ padding:7px 15px;font:700 12px/1 var(--kr);color:#4a483f}
 .tabs{display:flex;gap:8px;justify-content:center;margin:34px 0 18px}
-.tabs button{flex:0 0 auto;border:1px solid rgba(150,196,228,.3);background:rgba(255,255,255,.05);
- color:var(--cyan-soft);border-radius:10px;padding:11px 22px;font:800 14px/1 var(--kr);cursor:pointer}
-.tabs button.on{background:var(--gold);border-color:var(--gold);color:#172536}
-.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;font:700 11px/1 var(--kr);color:#9fb8cc}
+.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--paper2);
+ color:#5c5549;border-radius:10px;padding:11px 22px;font:800 14px/1 var(--kr);cursor:pointer}
+.tabs button.on{background:var(--ink2);border-color:var(--ink2);color:#f2ead6}
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;font:700 11px/1 var(--kr);color:var(--mut)}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px}
-.slot{border:1px solid rgba(150,196,228,.28);background:rgba(255,255,255,.05);border-radius:10px;
- padding:12px 6px;text-align:center;cursor:pointer;transition:.15s;color:var(--cyan-soft);font-family:var(--kr)}
-.slot .t{font:800 16px/1.2 var(--kr);color:#eaf3fb}
+.slot{border:1px solid var(--line);background:var(--sheet);border-radius:10px;
+ padding:12px 6px;text-align:center;cursor:pointer;transition:.15s;font-family:var(--kr);
+ box-shadow:0 1px 0 rgba(255,255,255,.6) inset}
+.slot .t{font:800 16px/1.2 var(--kr);color:var(--ink2)}
 .slot .s{font:700 11px/1.4 var(--kr);margin-top:5px;color:var(--ok)}
-.slot:hover{background:rgba(199,154,62,.18);border-color:var(--gold)}
-.slot.taken{background:rgba(255,255,255,.02);border-color:rgba(150,196,228,.14);cursor:not-allowed;opacity:.62}
-.slot.taken .t{color:#7f95a8}.slot.taken .s{color:#c1877f}
-.slot.blocked{background:rgba(0,0,0,.22);border-style:dashed;cursor:not-allowed;opacity:.5}
-.slot.blocked .s{color:#8a8676}
-.slot.past{opacity:.35;cursor:not-allowed}
-.note{margin-top:26px;background:rgba(255,255,255,.04);border:1px solid rgba(150,196,228,.22);
- border-radius:12px;padding:18px 20px;font-size:13px;color:#bcd2e2}
-.note b{color:#eaf3fb}
+.slot:hover{background:#fff;border-color:var(--gold);box-shadow:0 3px 10px rgba(120,100,50,.18)}
+.slot.taken{background:var(--paper2);border-color:var(--line2);cursor:not-allowed;box-shadow:none}
+.slot.taken .t{color:#9a9384}.slot.taken .s{color:var(--taken)}
+.slot.blocked{background:repeating-linear-gradient(45deg,#e4dccb,#e4dccb 5px,#ded5c1 5px,#ded5c1 10px);
+ border-style:dashed;cursor:not-allowed;box-shadow:none}
+.slot.blocked .t{color:#9a9384}.slot.blocked .s{color:#8a8676}
+.note{margin-top:26px;background:var(--paper2);border:1px solid var(--line2);
+ border-radius:12px;padding:18px 20px;font-size:13px;color:#4a483f}
+.note b{color:var(--ink2)}
 .note ul{margin:8px 0 0;padding-left:18px}.note li{margin:4px 0}
 /* modal */
-.mask{position:fixed;inset:0;background:rgba(6,16,28,.82);display:flex;align-items:center;justify-content:center;
+.mask{position:fixed;inset:0;background:rgba(43,42,36,.62);display:flex;align-items:center;justify-content:center;
  padding:18px;z-index:60;overflow:auto}
-.modal{background:var(--paper);color:var(--ink);border-radius:14px;max-width:430px;width:100%;
- padding:26px 26px 22px;box-shadow:var(--shadow);font-family:var(--kr)}
-.modal h2{font:800 20px/1.3 var(--kr);margin:0 0 4px;color:#161512}
+.modal{background:var(--sheet);color:var(--ink);border:1px solid var(--line2);border-radius:14px;max-width:430px;width:100%;
+ padding:26px 26px 22px;box-shadow:0 24px 60px rgba(20,16,8,.45);font-family:var(--kr)}
+.modal h2{font:800 20px/1.3 var(--kr);margin:0 0 4px;color:var(--ink2)}
 .modal .when{font:700 13px/1.5 var(--kr);color:var(--red);margin-bottom:16px}
 label{display:block;font:800 12px/1 var(--kr);color:#5c5549;margin:14px 0 6px;letter-spacing:.3px}
-input[type=text],input[type=tel],input[type=password],input[type=email]{width:100%;border:1px solid #b3a98d;background:#fbf7ec;
+input[type=text],input[type=tel],input[type=password],input[type=email]{width:100%;border:1px solid var(--line);background:#fff;
  border-radius:8px;padding:11px 12px;font:400 14px/1.4 var(--kr);color:var(--ink)}
 input:focus{outline:2px solid var(--gold);outline-offset:-1px}
 .sizes{display:flex;gap:8px}
-.sizes button{flex:1;border:1px solid #b3a98d;background:#fbf7ec;border-radius:8px;padding:11px;
+.sizes button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px;
  font:800 14px/1 var(--kr);color:#5c5549;cursor:pointer}
 .sizes button.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.agree{margin-top:16px;background:#e9e2ce;border:1px solid #cdbf98;border-radius:8px;padding:12px 13px;
+.agree{margin-top:16px;background:var(--paper3);border:1px solid var(--line2);border-radius:8px;padding:12px 13px;
  font:400 11px/1.65 var(--kr);color:#4a483f}
-.agree b{font-weight:800;color:#2b2a24}
-.agree label{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;font:700 12px/1.5 var(--kr);color:#2b2a24;cursor:pointer}
+.agree b{font-weight:800;color:var(--ink)}
+.agree label{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;font:700 12px/1.5 var(--kr);color:var(--ink);cursor:pointer}
 .agree input{margin-top:3px;flex:0 0 auto;width:15px;height:15px;accent-color:var(--blue)}
 .err{color:var(--red);font:700 12px/1.5 var(--kr);margin-top:10px;min-height:18px}
 .btnrow{display:flex;gap:9px;margin-top:16px}
 .btnrow button{flex:1;border:0;border-radius:9px;padding:13px;font:800 14px/1 var(--kr);cursor:pointer}
 .primary{background:var(--gold);color:#172536}
-.primary:disabled{background:#cfc6ae;color:#8a8676;cursor:not-allowed}
+.primary:disabled{background:#d8d0ba;color:#9a9384;cursor:not-allowed}
 .ghost{background:#e0d7bf;color:#5c5549}
 .done{text-align:center}
 .done .big{font:400 30px/1.2 'Black Han Sans',var(--kr);color:#1c6b45;margin:6px 0 10px}
-.done .card{background:#e9e2ce;border:1px solid #cdbf98;border-radius:10px;padding:16px;margin:14px 0;text-align:left}
-.done .card div{font:700 13px/1.9 var(--kr);color:#2b2a24}
+.done .card{background:var(--paper3);border:1px solid var(--line2);border-radius:10px;padding:16px;margin:14px 0;text-align:left}
+.done .card div{font:700 13px/1.9 var(--kr);color:var(--ink)}
 .done .card span{color:var(--mut);font-weight:400;display:inline-block;width:78px}
-.foot{text-align:center;margin-top:44px;color:var(--cyan);font-size:12px;opacity:.65}
-.foot a{color:var(--cyan);text-decoration:none;border-bottom:1px dotted}
+.foot{text-align:center;margin-top:44px;color:var(--mut);font-size:12px}
+.foot a{color:var(--mut);text-decoration:none;border-bottom:1px dotted}
 /* admin */
-.admin{background:rgba(255,255,255,.04);border:1px solid rgba(150,196,228,.24);border-radius:12px;padding:20px;margin-top:20px}
-.admin h2{font:800 17px/1 var(--kr);color:#eaf3fb;margin:0 0 14px}
-.admin table{width:100%;border-collapse:collapse;font-size:12.5px;color:#cfe0ee}
-.admin th{background:rgba(255,255,255,.07);padding:8px 7px;text-align:left;font:800 12px/1 var(--kr);color:#eaf3fb;white-space:nowrap}
-.admin td{border-top:1px solid rgba(150,196,228,.16);padding:8px 7px;vertical-align:middle}
+.admin{background:var(--paper2);border:1px solid var(--line2);border-radius:12px;padding:20px;margin-top:20px}
+.admin h2{font:800 17px/1 var(--kr);color:var(--ink2);margin:0 0 14px}
+.admin table{width:100%;border-collapse:collapse;font-size:12.5px;color:var(--ink)}
+.admin th{background:var(--paper3);padding:8px 7px;text-align:left;font:800 12px/1 var(--kr);color:#473e30;white-space:nowrap}
+.admin td{border-top:1px solid var(--line2);padding:8px 7px;vertical-align:middle}
 .admin td.mono{font-variant-numeric:tabular-nums;white-space:nowrap}
-.admin .mini{border:1px solid rgba(150,196,228,.35);background:transparent;color:var(--cyan-soft);
+.admin .mini{border:1px solid var(--line);background:var(--sheet);color:#5c5549;
  border-radius:6px;padding:5px 9px;font:700 11px/1 var(--kr);cursor:pointer;white-space:nowrap}
-.admin .mini.danger{border-color:#c1877f;color:#e8a49b}
+.admin .mini:hover{background:#fff}
+.admin .mini.danger{border-color:#c1877f;color:#a8493c}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.stat{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;font:700 12px/1 var(--kr);color:#9fb8cc}
-.stat b{color:var(--gold)}
-.setup{background:#3a2418;border:1px solid #c1402f;color:#ffd9d2;border-radius:10px;padding:16px 18px;
+.stat{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;font:700 12px/1 var(--kr);color:var(--mut)}
+.stat b{color:var(--red)}
+.setup{background:#f6e1da;border:1px solid var(--red);color:#7c2a1e;border-radius:10px;padding:16px 18px;
  margin:20px 0;font-size:13px;line-height:1.75}
-.setup code{background:rgba(0,0,0,.3);padding:1px 5px;border-radius:4px;font-size:12px}
+.setup code{background:rgba(193,64,47,.13);padding:1px 5px;border-radius:4px;font-size:12px}
 @media(max-width:520px){.grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}}
 </style>
 </head>
@@ -123,9 +127,9 @@ input:focus{outline:2px solid var(--gold);outline-offset:-1px}
 
 <div class="tabs" id="tabs"></div>
 <div class="legend">
-  <span><i style="background:rgba(87,201,138,.75)"></i>예약 가능</span>
-  <span><i style="background:rgba(193,135,127,.75)"></i>예약 완료</span>
-  <span><i style="background:rgba(120,120,120,.5)"></i>운영 안 함</span>
+  <span><i style="background:#2f7d52"></i>예약 가능</span>
+  <span><i style="background:#a8493c"></i>예약 완료</span>
+  <span><i style="background:#c2b9a4"></i>운영 안 함</span>
 </div>
 <div class="grid" id="grid"></div>
 
@@ -153,13 +157,13 @@ input:focus{outline:2px solid var(--gold);outline-offset:-1px}
 /* ═══════════════════════════════════════════════════════════════
    ① 여기를 본인 Firebase 프로젝트 설정으로 바꾸세요 (SETUP.md 참고)
    ═══════════════════════════════════════════════════════════════ */
-const firebaseConfig = {
-  apiKey: "AIzaSyCtZ8mCjKm2xuG54SZBuDmUQ0SzdthOjUM",
-  authDomain: "blueprint-escape.firebaseapp.com",
-  projectId: "blueprint-escape",
-  storageBucket: "blueprint-escape.firebasestorage.app",
-  messagingSenderId: "417306143182",
-  appId: "1:417306143182:web:057d9e958868b2f611e39f"
+const FIREBASE_CONFIG = {
+  apiKey: "여기에-붙여넣기",
+  authDomain: "여기에-붙여넣기",
+  projectId: "여기에-붙여넣기",
+  storageBucket: "여기에-붙여넣기",
+  messagingSenderId: "여기에-붙여넣기",
+  appId: "여기에-붙여넣기"
 };
 /* ═══════════════════════════════════════════════════════════════ */
 
@@ -344,7 +348,7 @@ function showDone(slot,d){
 /* ── 운영자 화면 ──────────────────────────────────────────── */
 function renderAdmin(){
   const host=$('#adminPanel'); host.classList.remove('hidden');
-  if(!db){ host.innerHTML='<h2>운영자</h2><p style="color:#e8a49b">Firebase 설정을 먼저 완료해 주세요.</p>'; return; }
+  if(!db){ host.innerHTML='<h2>운영자</h2><p style="color:#a8493c">Firebase 설정을 먼저 완료해 주세요.</p>'; return; }
   if(!isAdmin){
     host.innerHTML=`<h2>운영자 로그인</h2>
       <div style="max-width:320px">
@@ -380,7 +384,7 @@ function renderAdmin(){
       <tr><th>일시</th><th>상태</th><th>팀명</th><th>인원</th><th>대표자</th><th>연락처</th><th></th></tr>
       ${rows.map(r=>`<tr>
         <td class="mono">${r.s.day==='0909'?'9/9':'9/10'} ${r.s.time}</td>
-        <td>${r.st.status==='booked'?'<span style="color:#e8a49b">예약</span>':r.st.status==='blocked'?'<span style="color:#8a8676">차단</span>':'<span style="color:#57c98a">빈자리</span>'}</td>
+        <td>${r.st.status==='booked'?'<span style="color:#a8493c;font-weight:800">예약</span>':r.st.status==='blocked'?'<span style="color:#8a8676;font-weight:800">차단</span>':'<span style="color:#2f7d52;font-weight:800">빈자리</span>'}</td>
         <td>${esc(r.st.team||'')}</td>
         <td class="mono">${r.st.size?r.st.size+'명':''}</td>
         <td>${esc(r.bk?.leader||'')}</td>
