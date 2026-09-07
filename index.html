@@ -114,7 +114,7 @@ input:focus{outline:2px solid var(--gold);outline-offset:-1px}
   <div class="tag">잔디광장 부스 · 웹 방탈출 예약</div>
   <div class="info">
     <span class="chip">1팀 3~4명</span>
-    <span class="chip">진행 10분</span>
+    <span class="chip">진행 12분</span>
     <span class="chip">15분 간격</span>
   </div>
 </header>
@@ -139,8 +139,8 @@ input:focus{outline:2px solid var(--gold);outline-offset:-1px}
   <b>예약 전에 확인해 주세요</b>
   <ul>
     <li>한 팀은 <b>3명 또는 4명</b>으로만 참여할 수 있습니다.</li>
-    <li>진행 시간은 <b>10분</b>이며, 예약 시각 <b>5분 전까지</b> 부스 앞으로 와 주세요.</li>
-    <li>5분 이상 늦으면 다음 팀에게 순서가 넘어갑니다.</li>
+    <li>진행 시간은 <b>12분</b>이며, 예약 시각 <b>5분 전까지</b> 부스 앞으로 와 주세요.</li>
+    <li><b>3분</b> 이상 늦으면 다음 팀에게 순서가 넘어갑니다. 정리 시간이 3분뿐이라 정시에 시작해야 합니다.</li>
     <li>입장 전에 <b>기록물 열람 서약서</b>를 작성합니다.</li>
     <li>예약 변경·취소는 부스 운영팀으로 연락해 주세요.</li>
   </ul>
@@ -175,14 +175,14 @@ const DAYS = [
   { id:'0909', label:'9월 9일 (수)', short:'1일차', start:'10:30', end:'18:00' },
   { id:'0910', label:'9월 10일 (목)', short:'2일차', start:'10:30', end:'15:00' },
 ];
-const SLOT_MIN = 15;   // 진행 10분 + 정리 5분
+const SLOT_MIN = 15;   // 진행 12분 + 정리 3분
 
 const toMin = t => { const [h,m]=t.split(':').map(Number); return h*60+m; };
 const toHHMM = m => String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
 function slotsOf(day){
   const out=[]; for(let m=toMin(day.start); m+SLOT_MIN<=toMin(day.end); m+=SLOT_MIN){
     const hhmm=toHHMM(m);
-    out.push({ id: day.dayId||day.id, slotId: day.id+'_'+hhmm.replace(':',''), time:hhmm, endTime:toHHMM(m+10) });
+    out.push({ id: day.dayId||day.id, slotId: day.id+'_'+hhmm.replace(':',''), time:hhmm, endTime:toHHMM(m+12) });
   } return out;
 }
 const ALL = DAYS.flatMap(d => slotsOf(d).map(s => ({...s, day:d.id, dayLabel:d.label})));
@@ -368,7 +368,7 @@ function showDone(slot,d){
     </div>
     <div style="font:700 12.5px/1.7 var(--kr);color:#5c5549;text-align:left">
       · 예약 시각 <b>5분 전까지</b> 잔디광장 부스로 와 주세요.<br>
-      · 5분 이상 늦으면 순서가 다음 팀에게 넘어갑니다.<br>
+      · <b>3분</b> 이상 늦으면 순서가 다음 팀에게 넘어갑니다.<br>
       · 변경·취소는 부스 운영팀으로 연락해 주세요.
     </div>
     <div class="btnrow"><button class="primary" id="d_close">확인</button></div>
