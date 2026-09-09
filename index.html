@@ -90,6 +90,10 @@ input:focus{outline:2px solid var(--gold);outline-offset:-1px}
 .sizes button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .sizes button.rec i{font-style:normal;font:800 9.5px/1 var(--kr);letter-spacing:1.5px;color:var(--blue)}
 .sizes button.rec.on i{color:#d6e6ff}
+.sizes.wide{gap:6px}
+.sizes.wide button{padding:12px 4px;font-size:13.5px}
+.note-walkin{margin-top:14px;background:var(--paper3);border:1px solid var(--line2);
+ border-radius:8px;padding:11px 12px;font:400 12px/1.55 var(--kr);color:#5c5549}
 .agree{margin-top:16px;background:var(--paper3);border:1px solid var(--line2);border-radius:8px;padding:12px 13px;
  font:400 11px/1.65 var(--kr);color:#4a483f}
 .agree b{font-weight:800;color:var(--ink)}
@@ -391,6 +395,58 @@ function openForm(slot){
     }
   };
 }
+/* ── 현장 접수 (운영자 전용) ──────────────────────────────── */
+/* 팀명·대표자·연락처를 받지 않는다. 인원(2~6명)만 슬롯 문서에 기록한다. */
+const WALKIN_SIZES=[2,3,4,5,6];
+function openWalkin(slot){
+  let size=null;
+  $('#modalHost').innerHTML = `<div class="mask"><div class="modal">
+    <h2>현장 접수</h2>
+    <div class="when">${slot.dayLabel} · ${slot.time} ~ ${slot.endTime}</div>
+
+    <label>인원</label>
+    <div class="sizes wide" id="w_size">
+      ${WALKIN_SIZES.map(n=>`<button type="button" data-n="${n}">${n}명</button>`).join('')}
+    </div>
+
+    <div class="note-walkin">
+      현장 접수는 <b>팀명·대표자·연락처를 받지 않습니다.</b> 인원만 고르면 됩니다.<br>
+      등록하면 이 시간은 예약 페이지에서 <b>‘예약 완료’</b>로 바뀌어 더 이상 신청받지 않습니다.
+    </div>
+
+    <div class="err" id="w_err"></div>
+    <div class="btnrow">
+      <button class="ghost" id="w_cancel">닫기</button>
+      <button class="primary" id="w_ok">현장 접수 등록</button>
+    </div>
+  </div></div>`;
+
+  $('#w_size').onclick = e => { const b=e.target.closest('[data-n]'); if(!b)return;
+    size=+b.dataset.n; [...$('#w_size').children].forEach(x=>x.classList.toggle('on',x===b)); };
+  $('#w_cancel').onclick = () => $('#modalHost').innerHTML='';
+
+  $('#w_ok').onclick = async () => {
+    const err = m => { $('#w_err').textContent=m; };
+    if(!WALKIN_SIZES.includes(size)) return err('인원을 선택해 주세요. (2~6명)');
+    err(''); $('#w_ok').disabled=true; $('#w_ok').textContent='처리 중…';
+    const fs=window.FS;
+    try{
+      await fs.runTransaction(db, async tx => {
+        const ref=fs.doc(db,'slots',slot.slotId);
+        const snap=await tx.get(ref);
+        if(snap.exists() && snap.data().status==='booked') throw new Error('TAKEN');
+        tx.set(ref,{ day:slot.day, time:slot.time, status:'booked',
+                     size, walkin:true, at:fs.serverTimestamp() });
+      });
+      $('#modalHost').innerHTML='';
+    }catch(ex){
+      $('#w_ok').disabled=false; $('#w_ok').textContent='현장 접수 등록';
+      err(ex.message==='TAKEN' ? '이미 예약된 시간입니다. 새로고침 후 확인해 주세요.'
+                               : '등록에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+    }
+  };
+}
+
 function showDone(slot,d){
   $('#modalHost').innerHTML = `<div class="mask"><div class="modal done">
     <div class="big">예약 완료</div>
@@ -449,21 +505,23 @@ function renderAdmin(){
       <tr><th>일시</th><th>상태</th><th>팀명</th><th>인원</th><th>대표자</th><th>연락처</th><th>신청 시각</th><th></th></tr>
       ${rows.map(r=>`<tr>
         <td class="mono">${r.s.day==='0909'?'9/9':'9/10'} ${r.s.time}</td>
-        <td>${r.st.status==='booked'?'<span style="color:#a8493c;font-weight:800">예약</span>':r.st.status==='blocked'?'<span style="color:#8a8676;font-weight:800">차단</span>':'<span style="color:#2f7d52;font-weight:800">빈자리</span>'}</td>
-        <td>${esc(r.st.team||'')}</td>
+        <td>${r.st.status==='booked'?(r.st.walkin?'<span style="color:#2f6ea8;font-weight:800">현장</span>':'<span style="color:#a8493c;font-weight:800">예약</span>'):r.st.status==='blocked'?'<span style="color:#8a8676;font-weight:800">차단</span>':'<span style="color:#2f7d52;font-weight:800">빈자리</span>'}</td>
+        <td>${r.st.walkin?'<span style="color:#8a8676">현장 접수</span>':esc(r.st.team||'')}</td>
         <td class="mono">${r.st.size?r.st.size+'명':''}</td>
-        <td>${esc(r.bk?.leader||'')}</td>
-        <td class="mono">${esc(r.bk?.phone||'')}</td>
-        <td class="mono at">${esc(fmtAt(r.bk?.createdAt))}</td>
+        <td>${r.st.walkin?'<span style="color:#b3a98d">—</span>':esc(r.bk?.leader||'')}</td>
+        <td class="mono">${r.st.walkin?'<span style="color:#b3a98d">—</span>':esc(r.bk?.phone||'')}</td>
+        <td class="mono at">${esc(fmtAt(r.bk?.createdAt || r.st.at))}</td>
         <td>${r.st.status==='booked'
              ? `<button class="mini danger" data-cancel="${r.s.slotId}">취소</button>`
-             : `<button class="mini" data-toggle="${r.s.slotId}">${r.st.status==='blocked'?'열기':'차단'}</button>`}</td>
+             : `<button class="mini" data-walkin="${r.s.slotId}">현장</button> <button class="mini" data-toggle="${r.s.slotId}">${r.st.status==='blocked'?'열기':'차단'}</button>`}</td>
       </tr>`).join('')}
     </table></div>`;
 
   const fs=window.FS;
   host.onclick=async e=>{
-    const c=e.target.closest('[data-cancel]'), t=e.target.closest('[data-toggle]');
+    const c=e.target.closest('[data-cancel]'), t=e.target.closest('[data-toggle]'),
+          w=e.target.closest('[data-walkin]');
+    if(w){ openWalkin(ALL.find(x=>x.slotId===w.dataset.walkin)); return; }
     if(c){ if(!confirm('이 예약을 취소할까요? 되돌릴 수 없습니다.')) return;
       const id=c.dataset.cancel, s=ALL.find(x=>x.slotId===id);
       const b=fs.writeBatch(db);
@@ -488,9 +546,10 @@ function renderAdmin(){
   $('#t_csv').onclick=()=>{
     const head='일자,시간,상태,팀명,인원,대표자,연락처,신청 시각\n';
     const body=rows.map(r=>[r.s.day==='0909'?'9월 9일':'9월 10일',r.s.time,
-      r.st.status==='booked'?'예약':r.st.status==='blocked'?'차단':'빈자리',
-      r.st.team||'',r.st.size||'',r.bk?.leader||'',r.bk?.phone||'',
-      fmtAt(r.bk?.createdAt,true)].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+      r.st.status==='booked'?(r.st.walkin?'현장':'예약'):r.st.status==='blocked'?'차단':'빈자리',
+      r.st.walkin?'현장 접수':(r.st.team||''),r.st.size||'',
+      r.st.walkin?'':(r.bk?.leader||''), r.st.walkin?'':(r.bk?.phone||''),
+      fmtAt(r.bk?.createdAt || r.st.at, true)].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
     const url=URL.createObjectURL(new Blob(['﻿'+head+body],{type:'text/csv;charset=utf-8'}));
     const a=document.createElement('a'); a.href=url; a.download='예약현황.csv'; a.click(); URL.revokeObjectURL(url);
   };
